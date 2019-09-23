@@ -11,6 +11,11 @@ using namespace std;
 
 // static parameter
 // float lengths[] = {5,10,50,100,150,200,250,300,350,400};
+
+//just in case when we only have the grouth truth for endpoint
+//float lengths[] = {100,200,300,400,500,600,700,800, 393};
+//int32_t num_lengths = 8 + 1;
+
 float lengths[] = {100,200,300,400,500,600,700,800};
 int32_t num_lengths = 8;
 
@@ -271,7 +276,8 @@ void saveErrorPlots(vector<errors> &seq_err,string plot_error_dir,char* prefix) 
     }
     
     // we require at least 3 values
-    if (num>2.5) {
+    if (num> 0) {
+//    if (num>2.5) {
       fprintf(fp_tl,"%f %f\n",lengths[i],t_err/num);
       fprintf(fp_rl,"%f %f\n",lengths[i],r_err/num);
     }
@@ -294,7 +300,8 @@ void saveErrorPlots(vector<errors> &seq_err,string plot_error_dir,char* prefix) 
     }
     
     // we require at least 3 values
-    if (num>2.5) {
+    if (num> 0) {
+//    if (num>2.5) {
       fprintf(fp_ts,"%f %f\n",speed,t_err/num);
       fprintf(fp_rs,"%f %f\n",speed,r_err/num);
     }
@@ -408,13 +415,18 @@ void saveStats (vector<errors> err,string dir) {
 bool eval (string result_sha,Mail* mail) {
 
   // ground truth and result directories
-  string gt_dir         = "data/odometry/poses";
-  string result_dir     = "results/" + result_sha;
+  string gt_dir         = "/home/levin/workspace/data/kitti/data_odometry_poses/dataset/poses";
+  string result_dir     = "/home/levin/workspace/ORB_SLAM2/temp/slam_result";
+
+
+
   string error_dir      = result_dir + "/errors";
   string plot_path_dir  = result_dir + "/plot_path";
   string plot_error_dir = result_dir + "/plot_error";
 
   // create output directories
+  system("mkdir /home/levin/workspace/ORB_SLAM2/temp" );
+  system(("mkdir " + result_dir).c_str());
   system(("mkdir " + error_dir).c_str());
   system(("mkdir " + plot_path_dir).c_str());
   system(("mkdir " + plot_error_dir).c_str());
@@ -423,7 +435,9 @@ bool eval (string result_sha,Mail* mail) {
   vector<errors> total_err;
 
   // for all sequences do
-  for (int32_t i=11; i<22; i++) {
+
+//  for (int32_t i=4; i<5; i++) {
+  for (auto &i:{4}) {
    
     // file name
     char file_name[256];
@@ -481,13 +495,13 @@ bool eval (string result_sha,Mail* mail) {
 int32_t main (int32_t argc,char *argv[]) {
 
   // we need 2 or 4 arguments!
-  if (argc!=2 && argc!=4) {
-    cout << "Usage: ./eval_odometry result_sha [user_sha email]" << endl;
-    return 1;
-  }
+//  if (argc!=2 && argc!=4) {
+//    cout << "Usage: ./eval_odometry result_sha [user_sha email]" << endl;
+//    return 1;
+//  }
 
   // read arguments
-  string result_sha = argv[1];
+  string result_sha = "";
 
   // init notification mail
   Mail *mail;
@@ -497,11 +511,10 @@ int32_t main (int32_t argc,char *argv[]) {
 
   // run evaluation
   bool success = eval(result_sha,mail);
-  if (argc==4) mail->finalize(success,"odometry",result_sha,argv[2]);
-  else         mail->finalize(success,"odometry",result_sha);
+  //if (argc==4) mail->finalize(success,"odometry",result_sha,argv[2]);
+ // else         mail->finalize(success,"odometry",result_sha);
 
   // send mail and exit
   delete mail;
   return 0;
 }
-

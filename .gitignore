@@ -24,3 +24,4 @@ lib/
 .cproject
 .project
 CameraTrajectory.txt
+temp/
