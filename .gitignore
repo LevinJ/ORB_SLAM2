@@ -21,4 +21,6 @@ Vocabulary/ORBvoc.txt
 build/
 *~
 lib/
-
+.cproject
+.project
+CameraTrajectory.txt
