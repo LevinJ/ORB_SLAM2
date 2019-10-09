@@ -45,8 +45,8 @@ class Run_Mono(object):
         
         if not os.path.exists(dst):
             self.run_orb(seq)
-        shutil.copyfile(src, dst)    
-        print("Copy file from {} to {}".format(src, dst))
+            shutil.copyfile(src, dst)    
+            print("Copy file from {} to {}".format(src, dst))
         self.eval_result(seq, dst)
         return
 
