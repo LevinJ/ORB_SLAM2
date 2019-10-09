@@ -25,3 +25,4 @@ lib/
 .project
 CameraTrajectory.txt
 temp/
+.pydevproject
